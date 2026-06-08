@@ -62,7 +62,7 @@ const Skills = () => {
               transition={{ duration: 0.5, delay: groupIndex * 0.1 }}
               className="glass-panel rounded-2xl p-6 sm:p-8 card-interactive"
             >
-              <h3 className="font-display text-lg font-semibold mb-1">{group.title}</h3>
+              <h3 className="font-display text-lg mb-1">{group.title}</h3>
               <p className="text-sm mb-6" style={{ color: "var(--text-muted)" }}>
                 {group.description}
               </p>

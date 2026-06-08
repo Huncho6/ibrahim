@@ -1,48 +1,39 @@
 "use client";
 import "./globals.css";
-import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Fira_Code } from "next/font/google";
 import { Provider } from "react-redux";
 import { store } from "../app/store";
 import Footer from "@/components/Footer";
-import ToggleButton from "@/components/ToggleButton";
 import Sidebar from "@/components/Sidebar";
+import AtmosphericBackground from "@/components/AtmosphericBackground";
+import ThemeProvider from "@/components/ThemeProvider";
+import ThemeScript from "@/components/ThemeScript";
 
-const inter = Inter({
+const firaCode = Fira_Code({
   subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-space",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
+  weight: ["400", "700"],
+  variable: "--font-fira",
   display: "swap",
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} scroll-smooth`}
-    >
-      <body className="font-sans antialiased min-h-screen flex flex-col">
+    <html lang="en" className={`${firaCode.variable} scroll-smooth`} suppressHydrationWarning>
+      <body className="font-sans min-h-screen flex flex-col">
+        <ThemeScript />
         <Provider store={store}>
-          <div className="flex flex-1 min-h-screen">
-            <Sidebar />
-            <main className="flex-1 lg:ml-[280px] overflow-auto w-full">
-              <div className="min-h-screen">{children}</div>
-              <Footer />
-            </main>
-            <ToggleButton />
-          </div>
+          <ThemeProvider>
+            <div className="flex flex-1 min-h-screen">
+              <Sidebar />
+              <main className="flex-1 lg:pl-16 overflow-auto w-full relative">
+                <AtmosphericBackground />
+                <div className="relative z-10 min-h-screen">{children}</div>
+                <div className="relative z-10">
+                  <Footer />
+                </div>
+              </main>
+            </div>
+          </ThemeProvider>
         </Provider>
       </body>
     </html>

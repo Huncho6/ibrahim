@@ -60,7 +60,7 @@ const About = () => {
                 >
                   <Icon className="w-6 h-6" style={{ color: "var(--accent)" }} />
                 </div>
-                <h3 className="font-display text-lg sm:text-xl font-semibold mb-3 tracking-tight">
+                <h3 className="font-display text-lg sm:text-xl mb-3">
                   <span className="md:hidden">{service.mobileTitle}</span>
                   <span className="hidden md:inline">{service.title}</span>
                 </h3>

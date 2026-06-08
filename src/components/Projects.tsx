@@ -102,7 +102,7 @@ const Projects = () => {
                   ))}
                 </div>
 
-                <h3 className="font-display text-xl sm:text-2xl font-bold mb-3 tracking-tight">
+                <h3 className="font-display text-xl sm:text-2xl mb-3">
                   {project.title}
                 </h3>
 

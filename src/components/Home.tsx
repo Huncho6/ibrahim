@@ -1,63 +1,29 @@
 "use client";
-import { useAppSelector } from "@/app/hooks";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { HiArrowDown, HiOutlineDocumentDownload } from "react-icons/hi";
 
-const Home = () => {
-  const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
+const stats = [
+  { value: "2+", label: "Experiences" },
+  { value: "4+", label: "Clients" },
+  { value: "10+", label: "Projects" },
+];
 
+const Home = () => {
   return (
     <section
       id="home"
-      className="relative min-h-[90vh] flex items-center overflow-hidden"
+      className="relative min-h-0 lg:min-h-[90vh] flex flex-col justify-center"
     >
-      {/* Atmospheric background */}
-      <div className="absolute inset-0 grid-bg opacity-80" aria-hidden />
-      <div
-        className={`absolute inset-0 ${isDarkMode ? "bg-hero-glow-dark" : "bg-hero-glow"}`}
-        aria-hidden
-      />
-      <div
-        className="orb w-[420px] h-[420px] -top-32 -right-32 opacity-60"
-        style={{
-          background: isDarkMode
-            ? "radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%)"
-            : "radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 70%)",
-        }}
-        aria-hidden
-      />
-      <div
-        className="orb w-[300px] h-[300px] bottom-0 left-1/4 opacity-40 animate-delay-300"
-        style={{
-          background: isDarkMode
-            ? "radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%)"
-            : "radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%)",
-        }}
-        aria-hidden
-      />
-
-      {/* Subtle orbital ring */}
-      <div
-        className="absolute top-1/4 right-[10%] w-48 h-48 rounded-full border opacity-20 pointer-events-none hidden lg:block"
-        style={{ borderColor: "var(--border-strong)" }}
-        aria-hidden
-      />
-      <div
-        className="absolute top-[28%] right-[11%] w-32 h-32 rounded-full border opacity-10 pointer-events-none hidden lg:block animate-pulse-soft"
-        style={{ borderColor: "var(--accent)" }}
-        aria-hidden
-      />
-
-      <div className="section-container relative z-10 w-full pt-8 sm:pt-12">
+      <div className="section-container hero-section relative z-10 w-full lg:pt-24 lg:pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
+          className="flex flex-col gap-6 sm:gap-7 lg:gap-0"
         >
-          <p className="section-label mb-4">Portfolio · Ibrahim Abodunrin</p>
 
-          <h1 className="font-display text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight leading-[1.05] mb-6">
+          <h1 className="font-display text-[1.75rem] sm:text-4xl lg:text-7xl leading-none lg:mb-6">
             <span className="block" style={{ color: "var(--text)" }}>
               Hello, I&apos;m{" "}
               <span className="text-gradient">Ibrahim</span>
@@ -65,28 +31,41 @@ const Home = () => {
           </h1>
 
           <h2
-            className="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight mb-8 max-w-4xl"
+            className="font-display text-lg sm:text-2xl lg:text-4xl leading-snug lg:leading-none lg:mb-6 max-w-4xl"
             style={{ color: "var(--text-muted)" }}
           >
-            Full-stack software engineer building{" "}
-            <span style={{ color: "var(--text)" }}>scalable digital products</span>{" "}
-            and modern web applications.
+            Full-stack developer turning ideas into{" "}
+            <span style={{ color: "var(--text)" }}>reliable, scalable products</span>.
           </h2>
 
-          <p
-            className="text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl mb-10"
+          <div
+            className="text-sm sm:text-base lg:text-lg leading-[1.65] max-w-2xl lg:mb-10"
             style={{ color: "var(--text-muted)" }}
           >
-            I&apos;m a passionate and eager-to-learn full-stack developer focused on building
-            dynamic web applications. With a foundational understanding of both frontend and
-            backend development, I aim to create efficient, scalable solutions. As a fast
-            learner, I&apos;m excited to grow my skills and gain hands-on experience through
-            internships or entry-level opportunities. My love for problem-solving and delivering
-            seamless user experiences drives my work, and I look forward to learning and
-            contributing throughout the process.
-          </p>
+            <p>
+              I build clean, intuitive digital products with a focus on structure, performance,
+              and clarity. From early ideas to working systems, I turn concepts into usable
+              experiences that feel intentional and are built to grow over time.
+            </p>
+          </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 mb-16">
+          {/* Mobile: underlined text links */}
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 lg:hidden">
+            <Link
+              href="https://drive.google.com/file/d/19oflW7YQoY38l192CVuF6EmbSMeTBCSp/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hero-text-link"
+            >
+              VIEW MY RÉSUMÉ
+            </Link>
+            <a href="#projects" className="hero-text-link">
+              View selected work
+            </a>
+          </div>
+
+          {/* Desktop: buttons */}
+          <div className="hidden lg:flex flex-row gap-4">
             <Link
               href="https://drive.google.com/file/d/19oflW7YQoY38l192CVuF6EmbSMeTBCSp/view?usp=sharing"
               target="_blank"
@@ -94,37 +73,36 @@ const Home = () => {
               className="btn-primary"
             >
               <HiOutlineDocumentDownload className="w-5 h-5" />
-              Download Resume
+              VIEW MY RÉSUMÉ
             </Link>
             <a href="#projects" className="btn-secondary">
               View selected work
             </a>
           </div>
 
-          <div className="flex flex-wrap gap-3">
-            {["React", "Next.js", "Node.js", "TypeScript-ready stack", "MongoDB"].map(
-              (item) => (
-                <span key={item} className="tag">
-                  {item}
-                </span>
-              )
-            )}
+          <div className="hero-stats lg:mt-14">
+            {stats.map(({ value, label }) => (
+              <div key={label} className="hero-stat">
+                <span className="hero-stat-value">{value}</span>
+                <span className="hero-stat-label">{label}</span>
+              </div>
+            ))}
           </div>
-        </motion.div>
 
-        <motion.a
-          href="#about"
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:bottom-12 flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-opacity"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
-          transition={{ delay: 1 }}
-          aria-label="Scroll to about"
-        >
-          <span className="font-mono text-xs tracking-widest uppercase" style={{ color: "var(--text-subtle)" }}>
-            Explore
-          </span>
-          <HiArrowDown className="w-5 h-5 animate-bounce" style={{ color: "var(--accent)" }} />
-        </motion.a>
+          <motion.a
+            href="#about"
+            className="flex flex-col items-center gap-1.5 mx-auto w-fit mt-10 mb-2 opacity-50 hover:opacity-100 transition-opacity lg:mt-16 lg:mb-0 lg:gap-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            transition={{ delay: 1 }}
+            aria-label="Scroll to about"
+          >
+            <span className="font-mono text-xs tracking-widest uppercase" style={{ color: "var(--text-subtle)" }}>
+              Explore
+            </span>
+            <HiArrowDown className="w-4 h-4 lg:w-5 lg:h-5 animate-bounce" style={{ color: "var(--accent)" }} />
+          </motion.a>
+        </motion.div>
       </div>
     </section>
   );

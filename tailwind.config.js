@@ -15,9 +15,9 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        display: ["var(--font-space)", "var(--font-inter)", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+        sans: ["var(--font-fira)", "ui-monospace", "monospace"],
+        display: ["var(--font-pixel)", "sans-serif"],
+        mono: ["var(--font-fira)", "ui-monospace", "monospace"],
       },
       boxShadow: {
         glow: "0 0 60px -12px rgb(59 130 246 / 0.35)",
@@ -51,9 +51,9 @@ module.exports = {
       },
       backgroundImage: {
         "hero-glow":
-          "radial-gradient(ellipse 80% 50% at 50% -20%, rgb(59 130 246 / 0.15), transparent)",
+          "radial-gradient(ellipse 80% 50% at 50% -20%, rgb(59 130 246 / 0.06), transparent)",
         "hero-glow-dark":
-          "radial-gradient(ellipse 80% 50% at 50% -20%, rgb(139 92 246 / 0.2), transparent)",
+          "radial-gradient(ellipse 80% 50% at 50% -20%, rgb(139 92 246 / 0.08), transparent)",
       },
     },
   },

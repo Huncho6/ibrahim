@@ -25,7 +25,7 @@ export default function Main() {
             style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)" }}
           />
           <div
-            className="relative font-display text-6xl sm:text-7xl font-bold text-gradient animate-pulse-soft"
+            className="relative font-display text-6xl sm:text-7xl text-gradient animate-pulse-soft"
           >
             IB
           </div>
