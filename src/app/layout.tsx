@@ -1,13 +1,7 @@
-"use client";
-import "./globals.css";
+import type { Metadata } from "next";
 import { Fira_Code } from "next/font/google";
-import { Provider } from "react-redux";
-import { store } from "../app/store";
-import Footer from "@/components/Footer";
-import Sidebar from "@/components/Sidebar";
-import AtmosphericBackground from "@/components/AtmosphericBackground";
-import ThemeProvider from "@/components/ThemeProvider";
-import ThemeScript from "@/components/ThemeScript";
+import "./globals.css";
+import ClientLayout from "@/components/ClientLayout";
 
 const firaCode = Fira_Code({
   subsets: ["latin"],
@@ -16,28 +10,44 @@ const firaCode = Fira_Code({
   display: "swap",
 });
 
+const faviconUrl =
+  "https://res.cloudinary.com/dh60kpxg5/image/upload/v1781112467/ChatGPT_Image_Jun_10_2026_06_02_14_PM_t4yywr.png";
+
+export const metadata: Metadata = {
+  title: "Ibrahim",
+  description:
+    "Portfolio of Ibrahim Abodunrin — full-stack developer building intuitive, scalable digital products with clarity, reliability, and lasting impact.",
+  icons: {
+    icon: [{ url: faviconUrl, type: "image/png" }],
+    shortcut: [{ url: faviconUrl, type: "image/png" }],
+    apple: [{ url: faviconUrl, type: "image/png" }],
+  },
+  openGraph: {
+    title: "Ibrahim",
+    description:
+      "Portfolio of Ibrahim Abodunrin — full-stack developer building intuitive, scalable digital products with clarity, reliability, and lasting impact.",
+    type: "website",
+    images: [faviconUrl],
+  },
+  twitter: {
+    card: "summary",
+    title: "Ibrahim Abodunrin | Full-Stack Developer",
+    description:
+      "Portfolio of Ibrahim Abodunrin — full-stack developer building intuitive, scalable digital products with clarity, reliability, and lasting impact.",
+    images: [faviconUrl],
+  },
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${firaCode.variable} scroll-smooth`} suppressHydrationWarning>
+      <head>
+        <link rel="icon" href={faviconUrl} type="image/png" sizes="any" />
+        <link rel="shortcut icon" href={faviconUrl} type="image/png" />
+        <link rel="apple-touch-icon" href={faviconUrl} />
+      </head>
       <body className="font-sans min-h-screen flex flex-col">
-        <ThemeScript />
-        <Provider store={store}>
-          <ThemeProvider>
-            <a href="#main-content" className="skip-link">
-              Skip to content
-            </a>
-            <div className="flex flex-1 min-h-screen">
-              <Sidebar />
-              <main id="main-content" className="flex-1 lg:pl-16 overflow-auto w-full relative">
-                <AtmosphericBackground />
-                <div className="relative z-10 min-h-screen">{children}</div>
-                <div className="relative z-10">
-                  <Footer />
-                </div>
-              </main>
-            </div>
-          </ThemeProvider>
-        </Provider>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
