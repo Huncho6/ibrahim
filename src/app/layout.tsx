@@ -23,9 +23,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeScript />
         <Provider store={store}>
           <ThemeProvider>
+            <a href="#main-content" className="skip-link">
+              Skip to content
+            </a>
             <div className="flex flex-1 min-h-screen">
               <Sidebar />
-              <main className="flex-1 lg:pl-16 overflow-auto w-full relative">
+              <main id="main-content" className="flex-1 lg:pl-16 overflow-auto w-full relative">
                 <AtmosphericBackground />
                 <div className="relative z-10 min-h-screen">{children}</div>
                 <div className="relative z-10">

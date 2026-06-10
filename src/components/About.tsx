@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import SectionHeader from "./SectionHeader";
 import { technologies } from "@/data/technologies";
+import { fadeUp, inViewOptions, staggerFast } from "@/lib/motion";
 
 const stats = [
   { value: "2+", label: "Experiences" },
@@ -11,10 +12,10 @@ const stats = [
 ];
 
 const About = () => {
-  const [ref, inView] = useInView({ threshold: 0.08, triggerOnce: true });
+  const [ref, inView] = useInView(inViewOptions);
 
   return (
-    <section id="about" className="divider" ref={ref}>
+    <section id="about" className="divider section-anchor" ref={ref}>
       <div className="section-container">
         <SectionHeader
           title="About Me"
@@ -22,23 +23,14 @@ const About = () => {
         />
 
         <motion.ul
-          initial={{ opacity: 0, y: 12 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.08 }}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          variants={staggerFast}
           className="tech-stack"
           aria-label="Technologies I work with"
         >
-          {technologies.map((tech, index) => {
-            const { name, icon: Icon, color, logo } = tech;
-
-            return (
-            <motion.li
-              key={name}
-              initial={{ opacity: 0, y: 8 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.35, delay: 0.1 + index * 0.04 }}
-              className="tech-capsule"
-            >
+          {technologies.map(({ name, icon: Icon, color, logo }) => (
+            <motion.li key={name} variants={fadeUp} className="tech-capsule">
               {logo ? (
                 <img
                   src={logo}
@@ -54,21 +46,20 @@ const About = () => {
               )}
               <span>{name}</span>
             </motion.li>
-            );
-          })}
+          ))}
         </motion.ul>
 
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.15 }}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          variants={staggerFast}
           className="hero-stats about-stats"
         >
           {stats.map(({ value, label }) => (
-            <div key={label} className="hero-stat">
+            <motion.div key={label} variants={fadeUp} className="hero-stat">
               <span className="hero-stat-value">{value}</span>
               <span className="hero-stat-label">{label}</span>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
       </div>

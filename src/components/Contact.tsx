@@ -1,9 +1,10 @@
 "use client";
 import { useRef, FormEvent, useState } from "react";
 import emailjs from "@emailjs/browser";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import SectionHeader from "./SectionHeader";
+import { fadeUp, inViewOptions, staggerFast } from "@/lib/motion";
 
 const contactLinks = [
   {
@@ -20,7 +21,7 @@ const contactLinks = [
 
 const Contact = () => {
   const form = useRef<HTMLFormElement | null>(null);
-  const [ref, inView] = useInView({ threshold: 0.08, triggerOnce: true });
+  const [ref, inView] = useInView(inViewOptions);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   const sendEmail = (e: FormEvent<HTMLFormElement>) => {
@@ -45,7 +46,7 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="divider" ref={ref}>
+    <section id="contact" className="divider section-anchor" ref={ref}>
       <div className="section-container">
         <SectionHeader
           label="Contact"
@@ -54,14 +55,14 @@ const Contact = () => {
         />
 
         <motion.ul
-          initial={{ opacity: 0, y: 12 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.45, delay: 0.08 }}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          variants={staggerFast}
           className="contact-list"
           aria-label="Contact details"
         >
           {contactLinks.map(({ label, value, href }, index) => (
-            <li key={label} className="contact-item">
+            <motion.li key={label} variants={fadeUp} className="contact-item">
               <span className="contact-index" aria-hidden="true">
                 {String(index + 1).padStart(2, "0")}
               </span>
@@ -71,24 +72,24 @@ const Contact = () => {
                   {value}
                 </a>
               </div>
-            </li>
+            </motion.li>
           ))}
         </motion.ul>
 
         <motion.form
           ref={form}
           onSubmit={sendEmail}
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.15 }}
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          variants={staggerFast}
           className="contact-form"
         >
-          <p className="contact-form-intro">
+          <motion.p variants={fadeUp} className="contact-form-intro">
             Prefer a message? Send a note and I&apos;ll get back to you.
-          </p>
+          </motion.p>
 
           <div className="contact-form-grid">
-            <div className="contact-field">
+            <motion.div variants={fadeUp} className="contact-field">
               <label htmlFor="name" className="contact-field-label">
                 Name
               </label>
@@ -97,12 +98,13 @@ const Contact = () => {
                 type="text"
                 name="user_name"
                 required
+                autoComplete="name"
                 placeholder="Your name"
                 className="contact-input"
               />
-            </div>
+            </motion.div>
 
-            <div className="contact-field">
+            <motion.div variants={fadeUp} className="contact-field">
               <label htmlFor="phone" className="contact-field-label">
                 Phone
               </label>
@@ -110,12 +112,13 @@ const Contact = () => {
                 id="phone"
                 type="tel"
                 name="user_phone"
+                autoComplete="tel"
                 placeholder="Your phone number"
                 className="contact-input"
               />
-            </div>
+            </motion.div>
 
-            <div className="contact-field contact-field--full">
+            <motion.div variants={fadeUp} className="contact-field contact-field--full">
               <label htmlFor="subject" className="contact-field-label">
                 Subject
               </label>
@@ -127,9 +130,9 @@ const Contact = () => {
                 placeholder="What is this about?"
                 className="contact-input"
               />
-            </div>
+            </motion.div>
 
-            <div className="contact-field contact-field--full">
+            <motion.div variants={fadeUp} className="contact-field contact-field--full">
               <label htmlFor="message" className="contact-field-label">
                 Message
               </label>
@@ -141,28 +144,45 @@ const Contact = () => {
                 placeholder="Write your message"
                 className="contact-input contact-textarea"
               />
-            </div>
+            </motion.div>
           </div>
 
-          <div className="contact-form-actions">
+          <motion.div variants={fadeUp} className="contact-form-actions">
             <button
               type="submit"
               className="contact-submit"
               disabled={status === "sending"}
+              aria-busy={status === "sending"}
             >
               {status === "sending" ? "Sending..." : "Send message"}
             </button>
-            {status === "success" && (
-              <p className="contact-status contact-status--success" role="status">
-                Message sent successfully.
-              </p>
-            )}
-            {status === "error" && (
-              <p className="contact-status contact-status--error" role="status">
-                Failed to send. Please try again or email me directly.
-              </p>
-            )}
-          </div>
+            <AnimatePresence mode="wait">
+              {status === "success" && (
+                <motion.p
+                  key="success"
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="contact-status contact-status--success"
+                  role="status"
+                >
+                  Message sent successfully.
+                </motion.p>
+              )}
+              {status === "error" && (
+                <motion.p
+                  key="error"
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="contact-status contact-status--error"
+                  role="status"
+                >
+                  Failed to send. Please try again or email me directly.
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </motion.div>
         </motion.form>
       </div>
     </section>
