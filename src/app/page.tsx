@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Home from "@/components/Home";
 import About from "@/components/About";
-import Skills from "@/components/Skills";
+import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 export default function Main() {
@@ -21,8 +21,7 @@ export default function Main() {
       >
         <div className="relative">
           <div
-            className="absolute inset-0 rounded-2xl blur-xl opacity-50"
-            style={{ background: "linear-gradient(135deg, #3b82f6, #8b5cf6)" }}
+            className="absolute inset-0 rounded-2xl blur-xl opacity-50 accent-gradient"
           />
           <div
             className="relative font-display text-6xl sm:text-7xl text-gradient animate-pulse-soft"
@@ -35,7 +34,8 @@ export default function Main() {
             className="h-full rounded-full animate-shimmer"
             style={{
               width: "40%",
-              background: "linear-gradient(90deg, transparent, #3b82f6, #8b5cf6, transparent)",
+              background:
+                "linear-gradient(90deg, transparent, var(--accent), var(--accent-secondary), transparent)",
               backgroundSize: "200% 100%",
             }}
           />
@@ -51,7 +51,7 @@ export default function Main() {
     <div>
       <Home />
       <About />
-      <Skills />
+      <Experience />
       <Projects />
       <Contact />
     </div>

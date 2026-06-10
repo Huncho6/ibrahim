@@ -1,147 +1,97 @@
 "use client";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import SectionHeader from "./SectionHeader";
 import { HiOutlineExternalLink } from "react-icons/hi";
-
-const projects = [
-  {
-    id: "ecommerce",
-    title: "E-Commerce Platform",
-    problem: "Modern retail needs fast, responsive shopping experiences.",
-    solution:
-      "Developed a modern, React-based e-commerce platform with a sleek, minimalist design. The platform includes dynamic product listings and responsive navigation.",
-    impact: "Full product discovery flow with responsive UI across devices.",
-    tags: ["React", "Vite", "Responsive UI", "E-commerce"],
-    image:
-      "https://res.cloudinary.com/dh60kpxg5/image/upload/v1726848934/kickaaa_dehiat.png",
-    href: "https://ec-react-one.vercel.app/",
-    date: "Aug 2024",
-    featured: true,
-    span: "md:col-span-2 md:row-span-2",
-  },
-  {
-    id: "tictactoe",
-    title: "Tic-Tac-Toe",
-    problem: "Interactive games need instant feedback and clean UX.",
-    solution:
-      "Built an interactive Tic-Tac-Toe game using React, featuring a clean and straightforward design.",
-    impact: "Playable, accessible game with minimal friction.",
-    tags: ["React", "Game Logic", "UI/UX"],
-    image:
-      "https://res.cloudinary.com/dh60kpxg5/image/upload/v1726848934/tictac_ub60t6.png",
-    href: "https://tic-tac-toe-lime-phi.vercel.app/",
-    date: "Jun 2024",
-    featured: false,
-    span: "md:col-span-1",
-  },
-  {
-    id: "movies",
-    title: "Movie Browser Application",
-    problem: "Users need a fast way to discover films and watch trailers.",
-    solution:
-      "Developed a dynamic movie browsing application using React and Vite. Users can search for movies, view details, and watch trailers.",
-    impact: "Search-driven discovery with rich media previews.",
-    tags: ["React", "Vite", "API Integration"],
-    image:
-      "https://res.cloudinary.com/dh60kpxg5/image/upload/v1726590694/movie_pck1ms.png",
-    href: "https://movies-client-blond.vercel.app/",
-    date: "Sep 2024",
-    featured: false,
-    span: "md:col-span-1",
-  },
-];
+import SectionHeader from "./SectionHeader";
+import { projects, type Project } from "@/data/projects";
 
 const Projects = () => {
   const [ref, inView] = useInView({ threshold: 0.08, triggerOnce: true });
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
 
   return (
-    <section id="projects" className="divider relative" ref={ref}>
-      <div className="absolute inset-0 grid-bg opacity-40 pointer-events-none" aria-hidden />
-      <div className="section-container relative">
+    <section id="projects" className="divider project-section" ref={ref}>
+      <div className="section-container">
         <SectionHeader
-          label="Case Studies"
-          title="Selected Works"
-          description="Product-focused builds emphasizing problem, solution, and technical implementation."
+          label="Projects"
+          title="Selected works."
+          description="A few builds that reflect how I approach product, clarity, and execution."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 auto-rows-fr">
-          {projects.map((project, index) => (
-            <motion.article
-              key={project.id}
-              initial={{ opacity: 0, y: 24 }}
+        <ol className="project-list" aria-label="Selected projects">
+          {projects.map(({ id, title, description, href, date, tags, preview }, index) => (
+            <motion.li
+              key={id}
+              initial={{ opacity: 0, y: 14 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`group relative rounded-2xl overflow-hidden glass-panel card-interactive flex flex-col ${project.span} ${
-                project.featured ? "min-h-[480px]" : "min-h-[360px]"
-              }`}
+              transition={{ duration: 0.45, delay: index * 0.08 }}
+              className={`project-item${activeProject?.id === id ? " project-item--active" : ""}`}
+              onMouseEnter={() => setActiveProject({ id, title, description, href, date, tags, preview })}
+              onMouseLeave={() => setActiveProject(null)}
+              onFocus={() => setActiveProject({ id, title, description, href, date, tags, preview })}
+              onBlur={() => setActiveProject(null)}
             >
-              <div className="relative flex-1 min-h-[200px] overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      "linear-gradient(to top, var(--bg-elevated) 0%, transparent 55%, transparent 100%)",
-                  }}
-                />
-                <span className="absolute top-4 right-4 tag font-mono">{project.date}</span>
+              <div className="project-item-header">
+                <span className="project-index" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <div className="project-main">
+                  <h3 className="project-title">{title}</h3>
+                  <p className="project-description">{description}</p>
+                </div>
+                <time className="project-date" dateTime={date}>
+                  {date}
+                </time>
               </div>
 
-              <div className="relative p-6 sm:p-8 flex flex-col flex-1">
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tags.map((tag) => (
-                    <span key={tag} className="tag">
+              <div className="project-item-footer">
+                <ul className="project-tags" aria-label={`Technologies used in ${title}`}>
+                  {tags.map((tag) => (
+                    <li key={tag} className="project-tag">
                       {tag}
-                    </span>
+                    </li>
                   ))}
-                </div>
-
-                <h3 className="font-display text-xl sm:text-2xl mb-3">
-                  {project.title}
-                </h3>
-
-                <div className="space-y-3 text-sm sm:text-base flex-1" style={{ color: "var(--text-muted)" }}>
-                  <p>
-                    <span className="font-mono text-xs uppercase tracking-wider mr-2" style={{ color: "var(--accent)" }}>
-                      Problem
-                    </span>
-                    {project.problem}
-                  </p>
-                  <p>
-                    <span className="font-mono text-xs uppercase tracking-wider mr-2" style={{ color: "var(--accent)" }}>
-                      Solution
-                    </span>
-                    {project.solution}
-                  </p>
-                  <p>
-                    <span className="font-mono text-xs uppercase tracking-wider mr-2" style={{ color: "var(--accent-secondary)" }}>
-                      Impact
-                    </span>
-                    {project.impact}
-                  </p>
-                </div>
-
+                </ul>
                 <Link
-                  href={project.href}
+                  href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-6 font-medium text-sm group/link transition-colors"
-                  style={{ color: "var(--accent)" }}
+                  className="project-link"
                 >
-                  View live project
-                  <HiOutlineExternalLink className="w-4 h-4 transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
+                  View live
+                  <HiOutlineExternalLink className="project-link-icon" aria-hidden="true" />
                 </Link>
               </div>
-            </motion.article>
+            </motion.li>
           ))}
-        </div>
+        </ol>
       </div>
+
+      <AnimatePresence>
+        {activeProject && (
+          <motion.div
+            key={activeProject.id}
+            initial={{ opacity: 0, y: 12, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.98 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="project-preview"
+            aria-hidden="true"
+          >
+            <div className="project-preview-frame">
+              <img
+                src={activeProject.preview}
+                alt=""
+                className="project-preview-image"
+                loading="lazy"
+              />
+            </div>
+            <p className="project-preview-caption">{activeProject.title}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

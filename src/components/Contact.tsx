@@ -1,134 +1,168 @@
 "use client";
-import { FaPhone } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
-import { useRef, FormEvent } from "react";
+import { useRef, FormEvent, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import SectionHeader from "./SectionHeader";
 
+const contactLinks = [
+  {
+    label: "Email",
+    value: "teebliqs4@gmail.com",
+    href: "mailto:teebliqs4@gmail.com",
+  },
+  {
+    label: "Phone",
+    value: "+2348149602710",
+    href: "tel:+2348149602710",
+  },
+];
+
 const Contact = () => {
   const form = useRef<HTMLFormElement | null>(null);
   const [ref, inView] = useInView({ threshold: 0.08, triggerOnce: true });
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
   const sendEmail = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (form.current) {
-      emailjs
-        .sendForm(
-          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "",
-          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "",
-          form.current,
-          process.env.NEXT_PUBLIC_EMAILJS_USER_ID || ""
-        )
-        .then(
-          () => alert("Message sent successfully!"),
-          () => alert("Failed to send message. Please try again later.")
-        );
-    }
-  };
+    if (!form.current) return;
 
-  const inputClass =
-    "w-full px-4 py-3 rounded-xl text-sm sm:text-base transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent-blue/40";
+    setStatus("sending");
+    emailjs
+      .sendForm(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "",
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "",
+        form.current,
+        process.env.NEXT_PUBLIC_EMAILJS_USER_ID || ""
+      )
+      .then(
+        () => {
+          setStatus("success");
+          form.current?.reset();
+        },
+        () => setStatus("error")
+      );
+  };
 
   return (
     <section id="contact" className="divider" ref={ref}>
       <div className="section-container">
-        <SectionHeader label="Contact" title="Get In Touch" />
+        <SectionHeader
+          label="Contact"
+          title="Get in touch."
+          description="Open to collaborations, freelance work, and new opportunities."
+        />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-12">
-          {[
-            {
-              icon: MdEmail,
-              label: "Email",
-              value: "teebliqs4@gmail.com",
-            },
-            {
-              icon: FaPhone,
-              label: "Phone",
-              value: "+2348149602710",
-            },
-          ].map(({ icon: Icon, label, value }, i) => (
-            <motion.div
-              key={label}
-              initial={{ opacity: 0, y: 16 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.1 }}
-              className="glass-panel rounded-2xl p-6 flex items-center gap-5 card-interactive"
-            >
-              <div
-                className="p-4 rounded-xl shrink-0"
-                style={{
-                  background: "linear-gradient(135deg, #3b82f6, #8b5cf6)",
-                }}
-              >
-                <Icon className="w-6 h-6 text-white" />
+        <motion.ul
+          initial={{ opacity: 0, y: 12 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.45, delay: 0.08 }}
+          className="contact-list"
+          aria-label="Contact details"
+        >
+          {contactLinks.map(({ label, value, href }, index) => (
+            <li key={label} className="contact-item">
+              <span className="contact-index" aria-hidden="true">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div className="contact-main">
+                <p className="contact-label">{label}</p>
+                <a href={href} className="contact-value">
+                  {value}
+                </a>
               </div>
-              <div>
-                <p className="font-mono text-xs uppercase tracking-wider mb-1" style={{ color: "var(--text-subtle)" }}>
-                  {label}
-                </p>
-                <p className="font-semibold text-base sm:text-lg">{value}</p>
-              </div>
-            </motion.div>
+            </li>
           ))}
-        </div>
+        </motion.ul>
 
         <motion.form
           ref={form}
           onSubmit={sendEmail}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.2 }}
-          className="glass-panel rounded-2xl p-6 sm:p-10"
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="contact-form"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {[
-              { id: "name", name: "user_name", label: "Name", type: "text", required: true, placeholder: "Your name" },
-              { id: "phone", name: "user_phone", label: "Phone No", type: "tel", required: false, placeholder: "Your phone number" },
-              { id: "subject", name: "subject", label: "Subject", type: "text", required: true, placeholder: "Subject", fullWidth: false },
-            ].map((field) => (
-              <div key={field.id} className={field.fullWidth === false ? "" : ""}>
-                <label htmlFor={field.id} className="block text-sm font-medium mb-2" style={{ color: "var(--text-muted)" }}>
-                  {field.label}
-                </label>
-                <input
-                  id={field.id}
-                  type={field.type}
-                  name={field.name}
-                  required={field.required}
-                  placeholder={field.placeholder}
-                  className={inputClass}
-                  style={{
-                    background: "var(--glass-bg)",
-                    border: "1px solid var(--border)",
-                    color: "var(--text)",
-                  }}
-                />
-              </div>
-            ))}
-            <div className="sm:col-span-2">
-              <label htmlFor="message" className="block text-sm font-medium mb-2" style={{ color: "var(--text-muted)" }}>
+          <p className="contact-form-intro">
+            Prefer a message? Send a note and I&apos;ll get back to you.
+          </p>
+
+          <div className="contact-form-grid">
+            <div className="contact-field">
+              <label htmlFor="name" className="contact-field-label">
+                Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                name="user_name"
+                required
+                placeholder="Your name"
+                className="contact-input"
+              />
+            </div>
+
+            <div className="contact-field">
+              <label htmlFor="phone" className="contact-field-label">
+                Phone
+              </label>
+              <input
+                id="phone"
+                type="tel"
+                name="user_phone"
+                placeholder="Your phone number"
+                className="contact-input"
+              />
+            </div>
+
+            <div className="contact-field contact-field--full">
+              <label htmlFor="subject" className="contact-field-label">
+                Subject
+              </label>
+              <input
+                id="subject"
+                type="text"
+                name="subject"
+                required
+                placeholder="What is this about?"
+                className="contact-input"
+              />
+            </div>
+
+            <div className="contact-field contact-field--full">
+              <label htmlFor="message" className="contact-field-label">
                 Message
               </label>
               <textarea
                 id="message"
                 name="message"
                 required
-                rows={4}
+                rows={5}
                 placeholder="Write your message"
-                className={`${inputClass} resize-none`}
-                style={{
-                  background: "var(--glass-bg)",
-                  border: "1px solid var(--border)",
-                  color: "var(--text)",
-                }}
+                className="contact-input contact-textarea"
               />
             </div>
           </div>
-          <button type="submit" className="btn-primary mt-8 w-full sm:w-auto min-w-[160px]">
-            Send message
-          </button>
+
+          <div className="contact-form-actions">
+            <button
+              type="submit"
+              className="contact-submit"
+              disabled={status === "sending"}
+            >
+              {status === "sending" ? "Sending..." : "Send message"}
+            </button>
+            {status === "success" && (
+              <p className="contact-status contact-status--success" role="status">
+                Message sent successfully.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="contact-status contact-status--error" role="status">
+                Failed to send. Please try again or email me directly.
+              </p>
+            )}
+          </div>
         </motion.form>
       </div>
     </section>

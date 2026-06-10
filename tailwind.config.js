@@ -9,9 +9,9 @@ module.exports = {
         secondary: { DEFAULT: "#141414" },
         tertiary: { DEFAULT: "#69686D" },
         accent: {
-          blue: "#3b82f6",
-          violet: "#8b5cf6",
-          cyan: "#06b6d4",
+          blue: "#047857",
+          violet: "#065f46",
+          cyan: "#0f766e",
         },
       },
       fontFamily: {
@@ -20,8 +20,8 @@ module.exports = {
         mono: ["var(--font-fira)", "ui-monospace", "monospace"],
       },
       boxShadow: {
-        glow: "0 0 60px -12px rgb(59 130 246 / 0.35)",
-        "glow-violet": "0 0 80px -20px rgb(139 92 246 / 0.4)",
+        glow: "0 0 60px -12px rgb(4 120 87 / 0.35)",
+        "glow-violet": "0 0 80px -20px rgb(6 95 70 / 0.4)",
       },
       animation: {
         "fade-up": "fade-up 0.7s ease-out forwards",
@@ -51,9 +51,9 @@ module.exports = {
       },
       backgroundImage: {
         "hero-glow":
-          "radial-gradient(ellipse 80% 50% at 50% -20%, rgb(59 130 246 / 0.06), transparent)",
+          "radial-gradient(ellipse 80% 50% at 50% -20%, rgb(4 120 87 / 0.06), transparent)",
         "hero-glow-dark":
-          "radial-gradient(ellipse 80% 50% at 50% -20%, rgb(139 92 246 / 0.08), transparent)",
+          "radial-gradient(ellipse 80% 50% at 50% -20%, rgb(16 185 129 / 0.08), transparent)",
       },
     },
   },

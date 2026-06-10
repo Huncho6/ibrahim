@@ -2,27 +2,21 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import {
-  FaLinkedin,
-  FaGithub,
-  FaHome,
-  FaCode,
-  FaBriefcase,
-  FaBars,
-  FaTimes,
-} from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaBars, FaTimes } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { IoPersonOutline } from "react-icons/io5";
 import { MdAlternateEmail } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
-  { href: "#home", icon: FaHome, label: "Home" },
-  { href: "#about", icon: IoPersonOutline, label: "About" },
-  { href: "#projects", icon: FaBriefcase, label: "Works" },
-  { href: "#skills", icon: FaCode, label: "Skills" },
-  { href: "#contact", icon: MdAlternateEmail, label: "Contact" },
+  { href: "#home", label: "Home" },
+  { href: "#about", label: "About" },
+  { href: "#experience", label: "Experience" },
+  { href: "#projects", label: "Works" },
+  { href: "#contact", label: "Contact" },
 ];
+
+const resumeHref =
+  "https://drive.google.com/file/d/19oflW7YQoY38l192CVuF6EmbSMeTBCSp/view?usp=sharing";
 
 const socialLinks = [
   { href: "https://github.com/Huncho6", icon: FaGithub, label: "GitHub" },
@@ -42,10 +36,22 @@ const Sidebar = () => {
   const closeMenu = () => setIsOpen(false);
 
   useEffect(() => {
-    if (isOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
+    if (!isOpen) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+    document.body.style.overflow = isMobile ? "hidden" : "";
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeMenu();
+    };
+
+    window.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
     };
   }, [isOpen]);
 
@@ -75,11 +81,10 @@ const Sidebar = () => {
         </div>
       </aside>
 
-      {/* Top-right menu control */}
       <div className="top-controls">
         <button
           onClick={toggleMenu}
-          className="top-control-btn"
+          className={`top-control-btn ${isOpen ? "top-control-btn--active" : ""}`}
           aria-label={isOpen ? "Close menu" : "Open menu"}
           aria-expanded={isOpen}
         >
@@ -87,50 +92,48 @@ const Sidebar = () => {
         </button>
       </div>
 
-      {/* Swipe-down navigation */}
       <AnimatePresence>
         {isOpen && (
           <>
-            <motion.div
+            <motion.button
+              type="button"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[210]"
+              className="site-nav-backdrop"
               onClick={closeMenu}
+              aria-label="Close menu"
             />
             <motion.nav
-              initial={{ y: "-100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "-100%" }}
-              transition={{ type: "spring", damping: 32, stiffness: 320 }}
-              className="fixed top-0 left-0 right-0 z-[220] glass-panel border-b overflow-hidden lg:left-16"
-              style={{ borderColor: "var(--border)" }}
+              initial={{ opacity: 0, y: -16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ type: "spring", damping: 34, stiffness: 420 }}
+              className="site-nav-panel"
               aria-label="Main navigation"
             >
-              <div className="mobile-nav-panel">
-                <ul className="mobile-nav-list">
-                  {navItems.map(({ href, icon: Icon, label }) => (
-                    <li key={href}>
-                      <Link
-                        href={href}
-                        onClick={closeMenu}
-                        className="mobile-nav-link group"
-                      >
-                        <span className="mobile-nav-icon">
-                          <Icon className="w-3.5 h-3.5" />
-                        </span>
-                        <span>{label}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-
+              <div className="site-nav-links">
+                {navItems.map(({ href, label }, index) => (
+                  <span key={href} className="site-nav-item">
+                    {index > 0 && (
+                      <span className="site-nav-sep" aria-hidden>
+                        /
+                      </span>
+                    )}
+                    <Link href={href} onClick={closeMenu} className="site-nav-link">
+                      {label}
+                    </Link>
+                  </span>
+                ))}
+                <span className="site-nav-sep site-nav-sep--resume" aria-hidden>
+                  /
+                </span>
                 <Link
-                  href="https://drive.google.com/file/d/19oflW7YQoY38l192CVuF6EmbSMeTBCSp/view?usp=sharing"
+                  href={resumeHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={closeMenu}
-                  className="hero-text-link mobile-nav-resume"
+                  className="site-nav-link site-nav-link--resume"
                 >
                   Resume
                 </Link>

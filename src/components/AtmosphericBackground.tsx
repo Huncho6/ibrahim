@@ -17,16 +17,16 @@ const AtmosphericBackground = () => {
         className="orb w-[420px] h-[420px] -top-32 -right-32 opacity-30"
         style={{
           background: isDarkMode
-            ? "radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%)"
-            : "radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 70%)",
+            ? "radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 70%)"
+            : "radial-gradient(circle, rgba(4, 120, 87, 0.06) 0%, transparent 70%)",
         }}
       />
       <div
         className="orb w-[300px] h-[300px] bottom-1/4 left-1/4 opacity-20 animate-delay-300"
         style={{
           background: isDarkMode
-            ? "radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%)"
-            : "radial-gradient(circle, rgba(139, 92, 246, 0.04) 0%, transparent 70%)",
+            ? "radial-gradient(circle, rgba(5, 150, 105, 0.08) 0%, transparent 70%)"
+            : "radial-gradient(circle, rgba(15, 118, 110, 0.04) 0%, transparent 70%)",
         }}
       />
     </div>

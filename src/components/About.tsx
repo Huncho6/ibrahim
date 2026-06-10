@@ -2,30 +2,12 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import SectionHeader from "./SectionHeader";
-import { HiCodeBracket, HiServerStack, HiSquare3Stack3D } from "react-icons/hi2";
+import { technologies } from "@/data/technologies";
 
-const services = [
-  {
-    icon: HiCodeBracket,
-    title: "Interactive Frontend Development",
-    mobileTitle: "Frontend Development",
-    description:
-      "I'm proficient in frontend technologies like React.js, styled-components, and Tailwind CSS. I focus on creating responsive UIs, leveraging animations and transitions for smooth user experiences. My projects are structured with reusable components, ensuring clean, scalable code.",
-  },
-  {
-    icon: HiServerStack,
-    title: "Interactive Backend Development",
-    mobileTitle: "Backend Development",
-    description:
-      "In backend development, I specialize in Node.js and Express.js, focusing on building robust APIs. With strong expertise in MongoDB, I ensure efficient and scalable database management. My backend work includes seamless data flow and secure authentication systems.",
-  },
-  {
-    icon: HiSquare3Stack3D,
-    title: "MERN Stack Specialization",
-    mobileTitle: "MERN Stack Specialization",
-    description:
-      "As a full-stack developer, I excel at integrating React and Express to deliver dynamic, secure web applications. I handle both client-side and server-side development, ensuring solutions are user-friendly and technically sound.",
-  },
+const stats = [
+  { value: "2+", label: "Experiences" },
+  { value: "4+", label: "Clients" },
+  { value: "10+", label: "Projects" },
 ];
 
 const About = () => {
@@ -35,42 +17,60 @@ const About = () => {
     <section id="about" className="divider" ref={ref}>
       <div className="section-container">
         <SectionHeader
-          label="Expertise"
           title="About Me"
-          description="Full-stack capabilities across frontend, backend, and integrated product delivery."
+          description="With 2+ years of experience, I enjoy turning ideas into real products that are practical, maintainable, and built to grow. I've worked with companies like Novunt Finance and others, building across user-focused interfaces, backend systems, and the processes that connect them—with a consistent emphasis on clarity, performance, and long-term value."
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {services.map((service, index) => {
-            const Icon = service.icon;
+        <motion.ul
+          initial={{ opacity: 0, y: 12 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.08 }}
+          className="tech-stack"
+          aria-label="Technologies I work with"
+        >
+          {technologies.map((tech, index) => {
+            const { name, icon: Icon, color, logo } = tech;
+
             return (
-              <motion.div
-                key={service.title}
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: index * 0.12 }}
-                className="glass-panel rounded-2xl p-6 sm:p-8 card-interactive group"
-              >
-                <div
-                  className="inline-flex p-3 rounded-xl mb-5 transition-all duration-300 group-hover:shadow-glow"
-                  style={{
-                    background: "linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.15))",
-                    border: "1px solid var(--border)",
-                  }}
-                >
-                  <Icon className="w-6 h-6" style={{ color: "var(--accent)" }} />
-                </div>
-                <h3 className="font-display text-lg sm:text-xl mb-3">
-                  <span className="md:hidden">{service.mobileTitle}</span>
-                  <span className="hidden md:inline">{service.title}</span>
-                </h3>
-                <p className="text-sm sm:text-base leading-relaxed" style={{ color: "var(--text-muted)" }}>
-                  {service.description}
-                </p>
-              </motion.div>
+            <motion.li
+              key={name}
+              initial={{ opacity: 0, y: 8 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.35, delay: 0.1 + index * 0.04 }}
+              className="tech-capsule"
+            >
+              {logo ? (
+                <img
+                  src={logo}
+                  alt=""
+                  className="tech-capsule-icon tech-capsule-logo"
+                  width={16}
+                  height={16}
+                />
+              ) : (
+                Icon && (
+                  <Icon className="tech-capsule-icon" style={{ color }} aria-hidden="true" />
+                )
+              )}
+              <span>{name}</span>
+            </motion.li>
             );
           })}
-        </div>
+        </motion.ul>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="hero-stats about-stats"
+        >
+          {stats.map(({ value, label }) => (
+            <div key={label} className="hero-stat">
+              <span className="hero-stat-value">{value}</span>
+              <span className="hero-stat-label">{label}</span>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );
