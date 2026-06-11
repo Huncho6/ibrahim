@@ -15,7 +15,7 @@ const About = () => {
   const [ref, inView] = useInView(inViewOptions);
 
   return (
-    <section id="about" className="divider section-anchor" ref={ref}>
+    <section id="about" className="section-anchor" ref={ref}>
       <div className="section-container">
         <SectionHeader
           title="About Me"

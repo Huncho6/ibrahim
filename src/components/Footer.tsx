@@ -9,7 +9,7 @@ const Footer = () => {
   const [ref, inView] = useInView(inViewOptions);
 
   return (
-    <footer className="divider" ref={ref}>
+    <footer ref={ref}>
       <div className="section-container py-10 sm:py-12">
         <motion.div
           initial="hidden"
@@ -27,7 +27,7 @@ const Footer = () => {
 
           <motion.div
             variants={fadeUp}
-            className="footer-copy pt-6 lg:pt-0 border-t border-[var(--border)] lg:border-t-0"
+            className="footer-copy pt-6 lg:pt-0"
           >
             <p className="footer-copy-line">
               Built and designed <span aria-hidden="true">with ❤️</span> by Ibrahim Abodunrin.

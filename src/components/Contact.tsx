@@ -46,7 +46,7 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="divider section-anchor" ref={ref}>
+    <section id="contact" className="section-anchor" ref={ref}>
       <div className="section-container">
         <SectionHeader
           label="Contact"

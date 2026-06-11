@@ -14,7 +14,7 @@ const Projects = () => {
   const reducedMotion = useReducedMotion();
 
   return (
-    <section id="projects" className="divider project-section section-anchor" ref={ref}>
+    <section id="projects" className="project-section section-anchor" ref={ref}>
       <div className="section-container">
         <SectionHeader
           label="Projects"

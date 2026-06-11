@@ -9,7 +9,7 @@ const Experience = () => {
   const [ref, inView] = useInView(inViewOptions);
 
   return (
-    <section id="experience" className="divider section-anchor" ref={ref}>
+    <section id="experience" className="section-anchor" ref={ref}>
       <div className="section-container">
         <SectionHeader label="Experience" title="Career Highlights" />
 

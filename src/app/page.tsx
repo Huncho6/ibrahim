@@ -22,13 +22,15 @@ export default function Main() {
       {loading ? (
         <motion.div
           key="loader"
-          className="flex flex-col items-center justify-center min-h-screen gap-6"
+          className="flex flex-col items-center justify-center min-h-screen gap-5"
           style={{ background: "var(--bg)" }}
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: reducedMotion ? 0.15 : 0.35, ease: "easeOut" }}
+          role="status"
           aria-live="polite"
           aria-busy="true"
+          aria-label="Loading"
         >
           <div className="relative">
             <div className="absolute inset-0 rounded-2xl blur-xl opacity-50 accent-gradient" />
@@ -55,12 +57,6 @@ export default function Main() {
               transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
             />
           </div>
-          <p
-            className="font-mono text-xs tracking-widest uppercase"
-            style={{ color: "var(--text-subtle)" }}
-          >
-            Loading portfolio
-          </p>
         </motion.div>
       ) : (
         <motion.div
